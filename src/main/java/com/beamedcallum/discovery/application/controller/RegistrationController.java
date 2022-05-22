@@ -1,7 +1,7 @@
 package com.beamedcallum.discovery.application.controller;
 
 import common.discovery.messages.RegisterRequest;
-import common.discovery.messages.ServiceFoundResponse;
+import common.discovery.messages.DiscoveryResponse;
 import common.discovery.messages.SystemMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,6 @@ public class RegistrationController {
 
         System.out.println(registeredData);
 
-        //TODO: Make sure request is from a whitelist of IPs.
         return new ResponseEntity<>(new SystemMessage("Registered Service"), HttpStatus.OK);
     }
 
@@ -55,11 +54,11 @@ public class RegistrationController {
 
         if (hostnames.size() == 1){
             RegisterRequest request = hostnames.get(0);
-            return new ResponseEntity<>(new ServiceFoundResponse(request.getHostname(), request.getService(), request.getDefaultRole()), HttpStatus.OK);
+            return new ResponseEntity<>(new DiscoveryResponse(request), HttpStatus.OK);
         }
 
         SecureRandom random = new SecureRandom();
         RegisterRequest request = hostnames.get(random.nextInt(hostnames.size()));
-        return new ResponseEntity<>(new ServiceFoundResponse(request.getHostname(), request.getService(), request.getDefaultRole()), HttpStatus.OK);
+        return new ResponseEntity<>(new DiscoveryResponse(request), HttpStatus.OK);
     }
 }
